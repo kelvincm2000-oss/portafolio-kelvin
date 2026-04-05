@@ -2,20 +2,25 @@
 // src/components/Header.astro
 import { Image } from 'astro:assets';
 import aguacateLogo from '../../public/Dibujo digital (Aguacate).png';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const navItems = [
-  { name: 'Inicio', href: '#inicio' },
-  { name: 'Proyectos', href: '#proyectos' },
-  { name: 'Archivo', href: '#archive' },
-  { name: 'Servicios', href: '#servicios' },
-  { name: 'Contacto', href: '#contacto' },
+  { name: t('nav.inicio'), href: '#inicio' },
+  { name: t('nav.proyectos'), href: '#proyectos' },
+  { name: t('nav.servicios'), href: '#servicios' },
+  { name: t('nav.contacto'), href: '#contacto' },
 ];
+
+const homeUrl = lang === 'es' ? '/' : `/${lang}/`;
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-11000 transition-all duration-500 border-b border-transparent">
   <div class="container mx-auto px-6 h-20 flex items-center justify-between">
     <!-- Logo area -->
-    <a href="#inicio" class="nav-anchor flex items-center gap-3 group cursor-pointer">
+    <a href={homeUrl} class="flex items-center gap-3 group cursor-pointer">
       <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110">
         <Image src={aguacateLogo} alt="Logo Kelvin" class="w-full h-full object-contain drop-shadow-md" />
       </div>
@@ -26,7 +31,7 @@ const navItems = [
     </a>
 
     <!-- Navigation (Desktop) -->
-    <nav class="hidden md:flex items-center gap-10">
+    <nav class="hidden md:flex items-center gap-8 lg:gap-10">
       {navItems.map((item) => (
         <a 
           href={item.href} 
@@ -40,13 +45,29 @@ const navItems = [
 
     <!-- Mobile Trigger & Desktop CTA -->
     <div class="flex items-center gap-4 md:gap-6">
+      <!-- Language Switcher -->
+      <div class="flex items-center bg-forest-dark/5 rounded-full p-1 border border-forest-dark/10">
+        <a 
+          href="/" 
+          class={`px-2 py-1 text-[9px] font-black rounded-full transition-all duration-300 ${lang === 'es' ? 'bg-forest-dark text-white' : 'text-forest-dark/40 hover:text-forest-dark'}`}
+        >
+          ES
+        </a>
+        <a 
+          href="/en/" 
+          class={`px-2 py-1 text-[9px] font-black rounded-full transition-all duration-300 ${lang === 'en' ? 'bg-forest-dark text-white' : 'text-forest-dark/40 hover:text-forest-dark'}`}
+        >
+          EN
+        </a>
+      </div>
+
       <div class="hidden lg:flex flex-col items-end text-right">
         <span class="text-[9px] font-bold text-forest-dark/40 uppercase tracking-widest">Local Time</span>
         <span id="header-time" class="text-[11px] font-black text-forest-dark uppercase">00:00 AM</span>
       </div>
       
       <a href="#contacto" class="nav-anchor hidden sm:block px-6 py-3 bg-forest-dark text-white rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green transition-all duration-500 shadow-lg shadow-forest-dark/10">
-        Let's Talk
+        {t('hero.cta')}
       </a>
 
       <!-- Mobile Button -->
@@ -74,7 +95,7 @@ const navItems = [
     <div class="mt-8 flex flex-col items-center gap-4">
       <div class="w-12 h-0.5 bg-forest-green/30"></div>
       <a href="#contacto" class="nav-anchor px-10 py-5 bg-white text-forest-dark rounded-full text-sm font-black uppercase tracking-widest hover:bg-forest-green hover:text-white transition-all duration-500">
-        Let's Talk
+        {t('hero.cta')}
       </a>
     </div>
   </div>

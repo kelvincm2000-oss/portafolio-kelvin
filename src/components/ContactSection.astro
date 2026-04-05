@@ -1,5 +1,9 @@
 ---
 // src/components/ContactSection.astro
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <section id="contacto" class="relative min-h-[80vh] bg-forest-dark py-32 px-6 md:px-12 flex flex-col justify-center overflow-hidden uppercase font-black text-white">
@@ -14,25 +18,22 @@
       <!-- Left: Massive Text & Socials -->
       <div class="flex flex-col space-y-12">
         <div class="space-y-4">
-          <span class="text-forest-green text-xs tracking-[0.4em] block animate-pulse">DISPONIBLE PARA PROYECTOS</span>
-          <h2 class="text-[clamp(3.5rem,10vw,8rem)] leading-[0.85] tracking-tighter text-white drop-shadow-sm">
-            ¿TIENES UNA <span class="text-pale-moss italic drop-shadow-[0_0_15px_rgba(236,243,158,0.3)]">IDEA?</span><br/>
-            HAGAMOS <br/>
-            MAGIA.
+          <span class="text-forest-green text-xs tracking-[0.4em] block animate-pulse">{t('contact.status')}</span>
+      <h2 class="text-[clamp(3.5rem,10vw,8rem)] leading-[0.85] tracking-tighter text-white drop-shadow-sm">
+            {lang === 'es' ? '¿TIENES UNA ' : 'HAVE AN '}
+            <span class="text-forest-green">IDEA</span>?
+            <br/>
+            {t('contact.subtitle')}
           </h2>
         </div>
 
         <div class="flex flex-col space-y-6 pt-10 border-t border-white/10">
-          <p class="text-xs font-bold text-white/70 tracking-widest">ENCONTRAME EN</p>
+          <p class="text-xs font-bold text-white/70 tracking-widest">{t('contact.find_me')}</p>
           <div class="flex flex-wrap gap-x-12 gap-y-6">
             <a href="https://www.instagram.com/kelvincm2000/" target="_blank" class="text-sm tracking-widest text-white/90 hover:text-forest-green transition-all duration-300 relative group">
               Instagram
               <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-green transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <!-- <a href="#" target="_blank" class="text-sm tracking-widest text-white/90 hover:text-forest-green transition-all duration-300 relative group">
-              Linkedin
-              <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-green transition-all duration-300 group-hover:w-full"></span>
-            </a> -->
             <a href="https://www.behance.net/kelvincadrazco" target="_blank" class="text-sm tracking-widest text-white/90 hover:text-forest-green transition-all duration-300 relative group">
               Behance
               <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-green transition-all duration-300 group-hover:w-full"></span>
@@ -54,19 +55,19 @@
         </div>
 
         <div class="bg-white text-forest-dark p-12 rounded-4xl shadow-2xl transition-all duration-700 group-hover:-rotate-1 group-hover:scale-[1.02]">
-          <div class="flex flex-col space-y-8">
-            <h3 class="text-2xl tracking-tighter">ESTOY LISTO PARA ESCUCHARTE.</h3>
+          <div class="flex flex-col space-y-8 text-center sm:text-left">
+            <h3 class="text-2xl tracking-tighter uppercase">{t('contact.ready')}</h3>
             <p class="text-sm font-bold text-forest-dark/80 leading-relaxed uppercase">
-              ACTUALMENTE TOMANDO NUEVOS CLIENTES PARA JUNIO 2026. SI TIENES UN PROYECTO DE DISEÑO O ILUSTRACIÓN, ESTE ES EL MOMENTO.
+              {t('contact.desc')}
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-              <a href="mailto:kelvincm2000@gmail.com" class="flex flex-col items-center justify-center py-6 bg-forest-dark text-white rounded-2xl text-[10px] tracking-[0.2em] font-black hover:bg-forest-green transition-colors duration-500 shadow-xl shadow-forest-dark/20 uppercase whitespace-nowrap px-4">
-                <span class="opacity-70 mb-1">Email</span>
+              <a href="mailto:kelvincm2000@gmail.com" class="flex flex-col items-center justify-center py-6 bg-forest-dark text-white rounded-2xl text-[10px] tracking-[0.2em] font-black hover:bg-forest-green transition-colors duration-500 shadow-xl shadow-forest-dark/20 uppercase whitespace-nowrap px-4 leading-none">
+                <span class="opacity-70 mb-2">Email</span>
                 kelvincm2000@gmail.com
               </a>
-              <a href="https://wa.me/584125349040?text=Hola%20Kelvin!%20Estuve%20viendo%20tu%20portafolio%20y%20me%20gustaría%20platicar%20sobre%20un%20proyecto." target="_blank" class="flex flex-col items-center justify-center py-6 bg-white border-2 border-forest-dark text-forest-dark rounded-2xl text-[10px] tracking-[0.2em] font-black hover:bg-forest-dark hover:text-white transition-all duration-500 uppercase">
-                <span class="opacity-70 mb-1">Direct Chat</span>
+              <a href={`https://wa.me/584125349040?text=${encodeURIComponent(t('whatsapp.message'))}`} target="_blank" class="flex flex-col items-center justify-center py-6 bg-white border-2 border-forest-dark text-forest-dark rounded-2xl text-[10px] tracking-[0.2em] font-black hover:bg-forest-dark hover:text-white transition-all duration-500 uppercase leading-none">
+                <span class="opacity-70 mb-2">{t('contact.chat')}</span>
                 WhatsApp
               </a>
             </div>
@@ -83,7 +84,7 @@
   <div class="container mx-auto mt-32 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 opacity-80">
     <span class="text-[10px] tracking-widest text-white/90">© 2026 KELVIN DESIGN</span>
     <div class="flex gap-8">
-      <span class="text-[10px] tracking-widest text-white/90 uppercase">DESIGNED WITH ❤️ VENEZUELA por kleyver.x</span>
+      <span class="text-[10px] tracking-widest text-white/90 uppercase">{t('contact.rights')}</span>
     </div>
   </div>
 </section>

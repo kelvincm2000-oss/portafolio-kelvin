@@ -3,6 +3,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Image } from 'astro:assets';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 // Leemos la carpeta shots durante la construcción (build-time)
 const shotsDir = path.join(process.cwd(), 'public', 'shots');
@@ -28,10 +32,10 @@ const shots = allFiles
     <!-- Header -->
     <div class="mb-16 pointer-events-none overflow-hidden text-center md:text-left title-reveal">
       <h2 class="text-6xl md:text-8xl font-black text-forest-dark uppercase tracking-tighter leading-none overflow-hidden">
-        Shots <span class="text-forest-green">Archive</span>
+        Shots <span class="text-forest-green">{t('shots.title')}</span>
       </h2>
       <p class="mt-4 text-[10px] uppercase tracking-[0.6em] text-forest-dark/30 font-bold overflow-hidden">
-        Visual identity & Creative experiments
+        {t('shots.subtitle')}
       </p>
     </div>
 

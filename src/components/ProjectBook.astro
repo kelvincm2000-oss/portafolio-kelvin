@@ -2,6 +2,10 @@
 // src/components/ProjectBook.astro
 import fs from 'node:fs';
 import path from 'node:path';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const proyectsDir = path.resolve('./public/proyects');
 let pdfFiles: string[] = [];
@@ -21,6 +25,11 @@ const pdfList = pdfFiles.map(file => ({
 <div
   id="proyectos"
   class="book-section w-full min-h-[70vh] md:min-h-screen flex flex-col items-center justify-start bg-white relative overflow-hidden p-4 pt-16 md:pt-24 pointer-events-auto scroll-mt-20"
+  data-t-preparing={t('projects.loader_status')}
+  data-t-connecting={t('projects.connecting')}
+  data-t-progress={t('projects.loader_progress')}
+  data-t-processing={t('projects.processing')}
+  data-t-ready={t('projects.loader_ready')}
 >
   <!-- Header: Título y Switch -->
   <div
@@ -29,7 +38,7 @@ const pdfList = pdfFiles.map(file => ({
     <h2
       class="text-4xl md:text-5xl font-black text-forest-dark uppercase tracking-tighter title-reveal"
     >
-      Branding
+      {t('projects.title')}
     </h2>
 
     <div
@@ -83,7 +92,7 @@ const pdfList = pdfFiles.map(file => ({
           id="loader-status"
           class="text-[12px] font-black text-forest-dark uppercase tracking-[0.5em] translate-y-1 animate-pulse"
         >
-          Preparando Proyecto
+          {t('projects.loader_status')}
         </h3>
 
         <div
@@ -106,7 +115,7 @@ const pdfList = pdfFiles.map(file => ({
             id="loader-progress"
             class="text-[9px] tracking-[0.2em] font-bold text-forest-green uppercase"
           >
-            Iniciando motor
+            {t('projects.loader_progress')}
           </p>
           <span
             id="loader-percent"
@@ -225,6 +234,14 @@ const pdfList = pdfFiles.map(file => ({
   let loadTimeout: any = null;
   let currentLoadId = 0;
 
+  // Recuperar traducciones del DOM
+  const projectSection = document.getElementById("proyectos");
+  const tPreparing = projectSection?.dataset.tPreparing || "Preparing...";
+  const tConnecting = projectSection?.dataset.tConnecting || "Connecting...";
+  const tProgress = projectSection?.dataset.tProgress || "Progressing...";
+  const tProcessing = projectSection?.dataset.tProcessing || "Processing Page";
+  const tReady = projectSection?.dataset.tReady || "Ready!";
+
   async function startBook(pdfUrl: string) {
     const myLoadId = ++currentLoadId;
     const el = document.getElementById("book-container");
@@ -233,6 +250,7 @@ const pdfList = pdfFiles.map(file => ({
     const loaderPercent = document.getElementById("loader-percent");
     const progressEl = document.getElementById("loader-progress");
     const wrapper = document.getElementById("book-wrapper");
+    const statusEl = document.getElementById("loader-status");
 
     if (loader) {
       loader.classList.remove("pointer-events-none");
@@ -240,6 +258,8 @@ const pdfList = pdfFiles.map(file => ({
       void loader.offsetWidth;
       loader.style.opacity = "1";
     }
+
+    if (statusEl) statusEl.textContent = tPreparing;
 
     // Resetear vistas para recargar
     if (loaderBar) {
@@ -249,7 +269,7 @@ const pdfList = pdfFiles.map(file => ({
       loaderBar.style.transition = "width 0.5s ease-out";
     }
     if (loaderPercent) loaderPercent.textContent = "0%";
-    if (progressEl) progressEl.textContent = "Conectando...";
+    if (progressEl) progressEl.textContent = tConnecting;
     if (wrapper) wrapper.classList.remove("book-visible");
 
     // 🔥 RESET VISUAL DE PAGINACIÓN AL CAMBIAR PROYECTO 🔥
@@ -267,7 +287,6 @@ const pdfList = pdfFiles.map(file => ({
     }
 
     // 🔥 SOLUCIÓN VITAL: Recrear completamente el contenedor para cada PDF 🔥
-    // Esto asegura que `page-flip` no sufra por estilos o HTML corrupto de instancias anteriores
     if (el) el.remove();
     const newEl = document.createElement("div");
     newEl.id = "book-container";
@@ -276,12 +295,9 @@ const pdfList = pdfFiles.map(file => ({
 
     if (loadTimeout) clearTimeout(loadTimeout);
 
-    // Nuclear Timeout: Si en 30s no ha cargado, forzar visibilidad del wrapper para ver el error
     loadTimeout = setTimeout(() => {
       if (loader && loader.style.display !== "none") {
-        console.warn(
-          "[Book] Timeout de 30s alcanzado. Forzando cierre de loader.",
-        );
+        console.warn("[Book] Timeout de 30s alcanzado.");
         loader.style.opacity = "0";
         setTimeout(() => {
           loader.style.display = "none";
@@ -292,11 +308,9 @@ const pdfList = pdfFiles.map(file => ({
     }, 30000);
 
     try {
-      // Codificar URL para soportar espacios en archivos
       const safeUrl = encodeURI(pdfUrl);
       const doc = await pdfjsLib.getDocument(safeUrl).promise;
       const num = doc.numPages;
-      console.log(`[Book] PDF: ${num} páginas.`);
 
       const totalLabel = document.getElementById("total-pages");
       if (totalLabel) totalLabel.textContent = num.toString();
@@ -306,20 +320,14 @@ const pdfList = pdfFiles.map(file => ({
       const scale = isMobile ? 1.0 : 1.3;
 
       for (let i = 1; i <= num; i++) {
-        // 🔥 ABORTAR SI SE INICIÓ OTRA CARGA 🔥
-        if (myLoadId !== currentLoadId) {
-          console.log("[Book] Carga de PDF abortada por nuevo clic.");
-          return;
-        }
+        if (myLoadId !== currentLoadId) return;
 
-        // Actualizar barra de progreso visual (Escala de 10 a 90% durante el renderizado)
         const progress = 10 + Math.round((i / num) * 80);
         if (loaderBar) loaderBar.style.width = `${progress}%`;
         if (loaderPercent) loaderPercent.textContent = `${progress}%`;
 
         if (progressEl)
-          progressEl.textContent = `Procesando Pág. ${i} de ${num}`;
-        console.log(`[Book] Iniciando render página ${i}...`);
+          progressEl.textContent = `${tProcessing} ${i} / ${num}`;
 
         const page = await doc.getPage(i);
         const vp = page.getViewport({ scale });
@@ -340,10 +348,9 @@ const pdfList = pdfFiles.map(file => ({
           newEl.appendChild(div);
         }
         page.cleanup();
-        console.log(`[Book] Página ${i} procesada OK`);
       }
 
-      if (progressEl) progressEl.textContent = `Armando libro dinámico...`;
+      if (progressEl) progressEl.textContent = tProgress;
 
       await new Promise((r) => setTimeout(r, 500));
       if (myLoadId !== currentLoadId) return;
@@ -369,25 +376,18 @@ const pdfList = pdfFiles.map(file => ({
       // @ts-ignore
       flip.loadFromHTML(newEl.querySelectorAll(".page-item"));
       currentFlip = flip;
-      console.log("[Book] PageFlip Cargado.");
 
-      // 🔥 Pausa Vital: Esperamos que PageFlip termine de posicionarse y escalar
-      // internamente antes de mostrar nada al usuario (evita saltos bruscos)
       await new Promise((r) => setTimeout(r, 600));
       if (myLoadId !== currentLoadId) return;
 
-      // Forzar barra al 100% al finalizar
       if (loaderBar) loaderBar.style.width = "100%";
       if (loaderPercent) loaderPercent.textContent = "100%";
-      if (progressEl) progressEl.textContent = "¡Listo!";
+      if (progressEl) progressEl.textContent = tReady;
 
-      // Limpiar UI una vez cargado
       if (loadTimeout) clearTimeout(loadTimeout);
 
       if (loader) {
-        // Pausa elegante para ver el 100%
         await new Promise((r) => setTimeout(r, 900));
-
         loader.style.opacity = "0";
         setTimeout(() => {
           loader.style.display = "none";
@@ -405,7 +405,6 @@ const pdfList = pdfFiles.map(file => ({
       });
     } catch (err) {
       console.error("[Book] Error grave:", err);
-      // Ocultar loader tras un error para que la página no quede bloqueada
       if (loader) {
         loader.style.opacity = "0";
         setTimeout(() => {
@@ -417,7 +416,6 @@ const pdfList = pdfFiles.map(file => ({
     }
   }
 
-  // Listeners de paginación globales (evita duplicados al cambiar de PDF)
   document.getElementById("prev-page")?.addEventListener("click", () => {
     if (currentFlip) currentFlip.flipPrev();
   });
@@ -425,30 +423,18 @@ const pdfList = pdfFiles.map(file => ({
     if (currentFlip) currentFlip.flipNext();
   });
 
-  // Inicializar tabs de PDF
   const tabs = document.querySelectorAll(".pdf-tab");
   tabs.forEach((tab) => {
     tab.addEventListener("click", (e) => {
       const target = e.currentTarget as HTMLButtonElement;
       if (target.classList.contains("active")) return;
 
-      // Actualizar estado activo
       tabs.forEach((t) => {
-        t.classList.remove(
-          "active",
-          "text-white",
-          "bg-forest-dark",
-          "shadow-md",
-        );
+        t.classList.remove("active", "text-white", "bg-forest-dark", "shadow-md");
         t.classList.add("text-forest-dark/60");
       });
       target.classList.remove("text-forest-dark/60");
-      target.classList.add(
-        "active",
-        "text-white",
-        "bg-forest-dark",
-        "shadow-md",
-      );
+      target.classList.add("active", "text-white", "bg-forest-dark", "shadow-md");
 
       const newPdf = target.getAttribute("data-pdf");
       if (newPdf) {
@@ -457,7 +443,6 @@ const pdfList = pdfFiles.map(file => ({
     });
   });
 
-  // Ejecución segura inicial con el primer PDF
   const activeTab = document.querySelector(".pdf-tab.active");
   const initialPdf = activeTab?.getAttribute("data-pdf") || (document.querySelector(".pdf-tab")?.getAttribute("data-pdf"));
   

@@ -1,32 +1,37 @@
 ---
-// ServicesSection.astro
+// src/components/ServicesSection.astro
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const services = [
   {
     step: "01",
-    title: "Branding & Identity",
-    description: "Creación de marcas con alma. Desde el logotipo hasta el manual de identidad completo, construyo sistemas visuales que cuentan historias.",
-    tags: ["Logotipos", "Sistemas Visuales", "Packaging"],
+    title: t('services.branding.title'),
+    description: t('services.branding.desc'),
+    tags: t('services.branding.tags').split(', '),
     icon: "✦"
   },
   {
     step: "02",
-    title: "Digital Illustration",
-    description: "Arte vectorial y editorial con un enfoque artístico. Transformo ideas abstractas en ilustraciones que impactan y comunican.",
-    tags: ["Concept Art", "Vectorial", "Editorial"],
+    title: t('services.illustration.title'),
+    description: t('services.illustration.desc'),
+    tags: t('services.illustration.tags').split(', '),
     icon: "✎"
   },
   {
     step: "03",
-    title: "UI/UX & Web Design",
-    description: "Interfaces intuitivas y estéticamente impecables. Diseño experiencias digitales centradas en el usuario y el minimalismo premium.",
-    tags: ["Figma", "Prototipado", "Web Apps"],
+    title: t('services.web.title'),
+    description: t('services.web.desc'),
+    tags: t('services.web.tags').split(', '),
     icon: "⌘"
   },
   {
     step: "04",
-    title: "Editorial & Layout",
-    description: "El arte de la composición. Maquetación de revistas, libros y carteles con una tipografía cuidada y un ritmo visual perfecto.",
-    tags: ["InDesign", "Posters", "Revistas"],
+    title: t('services.editorial.title'),
+    description: t('services.editorial.desc'),
+    tags: t('services.editorial.tags').split(', '),
     icon: "▤"
   }
 ];
@@ -39,10 +44,10 @@ const services = [
   <div class="container mx-auto px-6 relative z-10">
     <div class="max-w-4xl mb-24">
       <h2 class="text-6xl md:text-8xl font-delight font-black uppercase tracking-tighter text-forest-dark mb-6 leading-[0.85]">
-        Mis <span class="text-stone-300">Servicios</span>
+        {t('services.title_main')} <span class="text-stone-300">{t('services.title_sub')}</span>
       </h2>
       <p class="text-xl md:text-2xl text-stone-500 font-delight max-w-2xl leading-relaxed">
-        Soluciones creativas que fusionan el arte técnico con una visión de diseño estratégica.
+        {t('services.intro')}
       </p>
     </div>
 
@@ -61,7 +66,7 @@ const services = [
             </div>
           </div>
           
-          <h3 class="text-3xl md:text-4xl font-delight font-bold text-forest-dark mb-6 group-hover:translate-x-2 transition-transform duration-500">
+          <h3 class="text-3xl md:text-4xl font-delight font-bold text-forest-dark mb-6 group-hover:translate-x-2 transition-transform duration-500 uppercase">
             {service.title}
           </h3>
           

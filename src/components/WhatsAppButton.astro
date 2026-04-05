@@ -1,11 +1,14 @@
 ---
-// src/components/WhatsAppButton.astro
-// He diseñado este botón flotante premium que se integra perfectamente con el estilo del portafolio.
-// Utiliza un efecto de glassmorphism y una micro-animación de entrada.
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const whatsappMessage = encodeURIComponent(t('whatsapp.message'));
 ---
 
 <a 
-  href="https://wa.me/584125349040?text=Hola%20Kelvin!%20Estuve%20viendo%20tu%20portafolio%20y%20me%20gustaría%20platicar%20sobre%20un%20proyecto." 
+  href={`https://wa.me/584125349040?text=${whatsappMessage}`} 
   target="_blank" 
   rel="noopener noreferrer"
   id="floating-whatsapp"
@@ -29,7 +32,7 @@
 
   <div class="flex flex-col pr-2 overflow-hidden w-0 group-hover:w-32 transition-all duration-500 ease-out">
     <span class="text-[10px] font-black tracking-widest text-[#25D366] uppercase leading-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">WhatsApp</span>
-    <span class="text-[9px] font-bold text-forest-green tracking-tighter leading-none mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-500">Let's talk!</span>
+    <span class="text-[9px] font-bold text-forest-green tracking-tighter leading-none mt-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-500">{t('whatsapp.label')}</span>
   </div>
 </a>
 
