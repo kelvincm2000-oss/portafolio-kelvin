@@ -1,0 +1,233 @@
+---
+// src/components/Hero.astro
+import kelSvg from '../../public/kel.svg?raw';
+---
+
+<section id="inicio" class="relative min-h-screen flex flex-col pt-32 pb-20 px-6 md:px-12 bg-white overflow-hidden uppercase font-black">
+  <!-- Top reference line -->
+  <div class="absolute top-28 left-0 w-full h-px bg-forest-dark/10"></div>
+  
+  <div class="container mx-auto relative z-10 grow flex flex-col justify-between">
+    <!-- Main Title Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end w-full mb-20 relative z-10">
+      <div class="relative">
+        <h1 class="text-[clamp(4rem,15vw,12rem)] leading-[0.8] tracking-tighter text-forest-dark">
+          CREANDO<br/>
+          <span class="text-forest-green italic translate-x-4 inline-block">ARTE</span>
+        </h1>
+      </div>
+      
+      <div class="flex flex-col items-start lg:items-end text-left lg:text-right">
+        <div class="w-full max-w-sm mb-8">
+           <div class="flex items-center gap-2 mb-4 justify-start lg:justify-end">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-forest-green opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-forest-green"></span>
+            </span>
+            <span class="text-[10px] tracking-[0.2em] text-forest-green">Haciendo Magia</span>
+          </div>
+          <p class="text-sm font-bold text-forest-dark/60 leading-tight">
+            Diseñador e Ilustrador transformando ideas en experiencias visuales premium para marcas que buscan destacar.
+          </p>
+        </div>
+        <h2 class="text-[clamp(4rem,15vw,12rem)] leading-[0.8] tracking-tighter text-forest-dark mt-auto">
+          VISUAL
+        </h2>
+      </div>
+    </div>
+
+    <!-- Center Composition: Illustration with background shape -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[450px] lg:w-[600px] pointer-events-none z-0">
+      <div class="absolute inset-0 bg-forest-green/5 blur-[120px] rounded-full scale-150 animate-pulse"></div>
+      <div 
+         class="w-full h-auto drop-shadow-[0_40px_80px_rgba(0,0,0,0.15)] kel-svg-container"
+         set:html={kelSvg}
+      />
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center pt-12 border-t border-forest-dark/10">
+      <div class="flex flex-col">
+        <span class="text-[9px] text-forest-dark/40 tracking-[0.3em]">Based in</span>
+        <span class="text-xs text-forest-dark">Venezuela, World</span>
+      </div>
+
+      <div class="flex justify-center">
+        <a href="#proyectos" class="group relative px-12 py-5 bg-forest-dark text-white rounded-full transition-all duration-500 overflow-hidden hover:scale-105 active:scale-95">
+          <span class="relative z-10 text-[10px] tracking-widest">GET IN TOUCH →</span>
+          <div class="absolute inset-0 bg-forest-green translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+        </a>
+      </div>
+
+      <div class="flex flex-col items-end text-right">
+        <span class="text-[9px] text-forest-dark/40 tracking-[0.3em]">Status</span>
+        <span class="text-xs text-forest-green italic">Available 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative grid lines (Reference style) -->
+  <div class="absolute inset-0 pointer-events-none opacity-[0.03]">
+    <div class="h-full w-full" style="background-image: radial-gradient(#000 1px, transparent 0); background-size: 40px 40px;"></div>
+  </div>
+</section>
+
+<style>
+  @keyframes scroll-wheel {
+    0% { transform: translate(-50%, 0); opacity: 0; }
+    30% { transform: translate(-50%, 0); opacity: 1; }
+    100% { transform: translate(-50%, 20px); opacity: 0; }
+  }
+
+  .animate-scroll-wheel {
+    animation: scroll-wheel 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes slide-right {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes fade-in-up {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-slide-right {
+    animation: slide-right 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Bounce-in land animation for illustration */
+  @keyframes illustration-land {
+    0% {
+      opacity: 0;
+      transform: translateY(-80px) rotate(-10deg) scale(0.85);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotate(0) scale(1);
+    }
+  }
+
+  .animate-illustration-land {
+    animation: illustration-land 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.8s; /* Aparece después del texto principal */
+    opacity: 0;
+  }
+
+  .text-forest-dark {
+    color: #132a13;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initHeroAnimation() {
+    const svgContainer = document.querySelector('.kel-svg-container svg');
+    if (!svgContainer) return;
+
+    // Aseguramos que el SVG tome el 100% de su contenedor inline
+    (svgContainer as HTMLElement).style.width = '100%';
+    (svgContainer as HTMLElement).style.height = 'auto';
+
+    const paths = Array.from(svgContainer.querySelectorAll('path'));
+    
+    // Barajar los paths para que el orden de animación sea aleatorio
+    const shuffledPaths = [...paths].sort(() => Math.random() - 0.5);
+
+    // Preparación inicial
+    paths.forEach(path => {
+      // Guardar colores originales
+      path.dataset.originalFill = path.getAttribute('fill') || 'transparent';
+      path.dataset.originalStroke = path.getAttribute('stroke') || 'transparent';
+      path.dataset.originalStrokeWidth = path.getAttribute('stroke-width') || '0';
+
+      const length = path.getTotalLength();
+      
+      // Decidimos con qué color dibujar el trazo animado
+      let drawColor = '#00DB3E';
+      if (path.dataset.originalStroke && path.dataset.originalStroke !== 'none' && path.dataset.originalStroke !== 'transparent') {
+        drawColor = path.dataset.originalStroke;
+      } else if (path.dataset.originalFill && path.dataset.originalFill !== 'none' && path.dataset.originalFill !== 'transparent') {
+        drawColor = path.dataset.originalFill;
+      }
+
+      gsap.set(path, {
+        fill: 'transparent',
+        stroke: drawColor,
+        strokeWidth: 1,
+        strokeDasharray: length,
+        strokeDashoffset: length
+      });
+    });
+
+    const tl = gsap.timeline({ 
+      delay: 0.5 
+    });
+
+    // FASE 0: Animación de entrada para el texto principal
+    const textLines = svgContainer.closest('section')?.querySelectorAll('h1, h2');
+    if (textLines) {
+      tl.from(textLines, {
+        y: 100,
+        opacity: 0,
+        rotateX: -45,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "back.out(1.7)"
+      });
+    }
+
+    // FASE 1: Dibujar trazos de manera aleatoria
+    tl.to(shuffledPaths, {
+      strokeDashoffset: 0,
+      duration: 0.4, 
+      ease: 'power2.out',
+      stagger: {
+        amount: 0.5, 
+        from: "random"
+      }
+    }, "-=0.8");
+
+    // FASE 2: Rellenar colores de manera aleatoria
+    tl.add("fillStage", "-=0.4"); // Solapamiento más agresivo
+
+    tl.to(shuffledPaths, {
+      fill: (i, target) => target.dataset.originalFill === 'none' ? 'transparent' : target.dataset.originalFill,
+      stroke: (i, target) => target.dataset.originalStroke === 'none' ? 'transparent' : target.dataset.originalStroke,
+      strokeWidth: (i, target) => target.dataset.originalStrokeWidth,
+      duration: 0.2, 
+      ease: 'power1.inOut',
+      stagger: {
+        amount: 0.4, 
+        from: "random"
+      }
+    }, "fillStage");
+
+    // FASE FINAL: Revelar el indicador de scroll
+    tl.to('.scroll-indicator-hero', {
+      opacity: 1,
+      y: -10,
+      duration: 1,
+      ease: "power2.out"
+    }, "+=0.3");
+  }
+
+  // Ejecutamos en la carga de la vista actual o la navegación inicial
+  document.addEventListener('DOMContentLoaded', initHeroAnimation);
+  document.addEventListener('astro:page-load', initHeroAnimation);
+</script>

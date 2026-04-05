@@ -1,0 +1,470 @@
+---
+// src/components/ProjectBook.astro
+import fs from 'node:fs';
+import path from 'node:path';
+
+const proyectsDir = path.resolve('./public/proyects');
+let pdfFiles: string[] = [];
+
+try {
+  pdfFiles = fs.readdirSync(proyectsDir).filter(file => file.endsWith('.pdf'));
+} catch (e) {
+  console.error("Error leyendo carpeta proyects:", e);
+}
+
+const pdfList = pdfFiles.map(file => ({
+  url: `/proyects/${file}`,
+  name: file.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ')
+}));
+---
+
+<div
+  class="book-section w-full min-h-[70vh] md:min-h-screen flex flex-col items-center justify-start bg-white relative overflow-hidden p-4 pt-16 md:pt-24 pointer-events-auto"
+>
+  <!-- Header: Título y Switch -->
+  <div
+    class="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 mb-8 md:mb-16 z-20"
+  >
+    <h2
+      class="text-4xl md:text-5xl font-black text-forest-dark uppercase tracking-tighter title-reveal"
+    >
+      Branding
+    </h2>
+
+    <div
+      class="flex items-center gap-1 bg-forest-dark/5 p-1.5 rounded-full overflow-x-auto max-w-full"
+    >
+      {pdfList.map((pdf, index) => (
+        <button
+          class={`pdf-tab shrink-0 px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 ${index === 0 ? 'active text-white bg-forest-dark shadow-md' : 'text-forest-dark/60 hover:text-forest-dark hover:bg-forest-dark/10'}`}
+          data-pdf={pdf.url}>
+          {pdf.name}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Loader de Emergencia Premium -->
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-white/95 backdrop-blur-md transition-all duration-700 pointer-events-auto"
+    id="book-loader"
+  >
+    <div class="flex flex-col items-center w-64">
+      <!-- Spinner circular minimalista -->
+      <div class="relative w-16 h-16 mb-8 group">
+        <div
+          class="absolute inset-0 border-[3px] border-forest-dark/5 rounded-full scale-110"
+        >
+        </div>
+        <div
+          class="absolute inset-0 border-t-[3px] border-forest-green rounded-full animate-spin shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+        >
+        </div>
+        <div
+          class="absolute inset-0 flex items-center justify-center opacity-20 transform group-hover:scale-125 transition-transform"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path
+              d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg
+          >
+        </div>
+      </div>
+
+      <div class="w-full space-y-4 text-center">
+        <h3
+          id="loader-status"
+          class="text-[12px] font-black text-forest-dark uppercase tracking-[0.5em] translate-y-1 animate-pulse"
+        >
+          Preparando Proyecto
+        </h3>
+
+        <div
+          class="relative w-full h-[4px] bg-forest-dark/10 rounded-full overflow-hidden shadow-inner"
+        >
+          <div
+            id="loader-bar"
+            class="absolute top-0 left-0 h-full bg-forest-green transition-all duration-700 ease-out shadow-[0_0_15px_rgba(34,197,94,0.5)]"
+            style="width: 0%;"
+          >
+          </div>
+          <div
+            class="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_1.2s_infinite]"
+          >
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center px-1">
+          <p
+            id="loader-progress"
+            class="text-[9px] tracking-[0.2em] font-bold text-forest-green uppercase"
+          >
+            Iniciando motor
+          </p>
+          <span
+            id="loader-percent"
+            class="text-[9px] font-black text-forest-dark opacity-30">0%</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- El Libro -->
+  <div
+    id="book-wrapper"
+    class="w-full flex flex-col items-center opacity-0 transition-opacity duration-1000 relative z-10"
+  >
+    <div id="book-container" class="mx-auto shadow-2xl bg-white min-h-[400px]">
+      <!-- Páginas -->
+    </div>
+
+    <!-- Controles -->
+    <div
+      id="book-controls"
+      class="mt-12 flex items-center gap-12 pointer-events-auto"
+    >
+      <button
+        id="prev-page"
+        class="p-3 text-forest-dark/20 hover:text-forest-dark transition-all"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"><path d="m15 18-6-6 6-6"></path></svg
+        >
+      </button>
+
+      <div class="text-[11px] font-black tracking-widest text-forest-dark/60">
+        <span id="current-page">01</span> / <span id="total-pages">--</span>
+      </div>
+
+      <button
+        id="next-page"
+        class="p-3 text-forest-dark/20 hover:text-forest-dark transition-all"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"><path d="m9 18 6-6-6-6"></path></svg
+        >
+      </button>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  #book-container {
+    max-width: 95vw;
+    background: #fff;
+    transform-origin: center center;
+    transition: transform 0.4s ease-out;
+  }
+  .page-item {
+    background: #fff;
+    overflow: hidden;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.05);
+  }
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+
+  .book-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    scale: 1 !important;
+  }
+
+  /* Contenedor padre con altura mínima para evitar saltos de layout */
+  #book-wrapper {
+    transform: translateY(30px) scale(0.98);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+</style>
+
+<script>
+  // @ts-ignore
+  import * as pdfjsLib from "pdfjs-dist";
+  import { PageFlip } from "page-flip";
+
+  // Forzamos el worker desde CDN de confianza
+  const PDFJS_VERSION = "5.6.205";
+  // @ts-ignore
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/build/pdf.worker.mjs`;
+
+  let currentFlip: any = null;
+  let loadTimeout: any = null;
+  let currentLoadId = 0;
+
+  async function startBook(pdfUrl: string) {
+    const myLoadId = ++currentLoadId;
+    const el = document.getElementById("book-container");
+    const loader = document.getElementById("book-loader");
+    const loaderBar = document.getElementById("loader-bar");
+    const loaderPercent = document.getElementById("loader-percent");
+    const progressEl = document.getElementById("loader-progress");
+    const wrapper = document.getElementById("book-wrapper");
+
+    if (loader) {
+      loader.classList.remove("pointer-events-none");
+      loader.style.display = "flex";
+      void loader.offsetWidth;
+      loader.style.opacity = "1";
+    }
+
+    // Resetear vistas para recargar
+    if (loaderBar) {
+      loaderBar.style.transition = "none";
+      loaderBar.style.width = "0%";
+      void loaderBar.offsetWidth; // Force Reflow
+      loaderBar.style.transition = "width 0.5s ease-out";
+    }
+    if (loaderPercent) loaderPercent.textContent = "0%";
+    if (progressEl) progressEl.textContent = "Conectando...";
+    if (wrapper) wrapper.classList.remove("book-visible");
+
+    // 🔥 RESET VISUAL DE PAGINACIÓN AL CAMBIAR PROYECTO 🔥
+    const curLabel = document.getElementById("current-page");
+    const totLabel = document.getElementById("total-pages");
+    if (curLabel) curLabel.textContent = "01";
+    if (totLabel) totLabel.textContent = "--";
+
+    // Limpiar instancia previa y destruir el DOM contaminado
+    if (currentFlip) {
+      try {
+        currentFlip.destroy();
+      } catch (e) {}
+      currentFlip = null;
+    }
+
+    // 🔥 SOLUCIÓN VITAL: Recrear completamente el contenedor para cada PDF 🔥
+    // Esto asegura que `page-flip` no sufra por estilos o HTML corrupto de instancias anteriores
+    if (el) el.remove();
+    const newEl = document.createElement("div");
+    newEl.id = "book-container";
+    newEl.className = "mx-auto shadow-2xl bg-white min-h-[400px]";
+    wrapper?.insertBefore(newEl, document.getElementById("book-controls"));
+
+    if (loadTimeout) clearTimeout(loadTimeout);
+
+    // Nuclear Timeout: Si en 30s no ha cargado, forzar visibilidad del wrapper para ver el error
+    loadTimeout = setTimeout(() => {
+      if (loader && loader.style.display !== "none") {
+        console.warn(
+          "[Book] Timeout de 30s alcanzado. Forzando cierre de loader.",
+        );
+        loader.style.opacity = "0";
+        setTimeout(() => {
+          loader.style.display = "none";
+          loader.classList.add("pointer-events-none");
+        }, 300);
+        if (wrapper) wrapper.classList.add("book-visible");
+      }
+    }, 30000);
+
+    try {
+      // Codificar URL para soportar espacios en archivos
+      const safeUrl = encodeURI(pdfUrl);
+      const doc = await pdfjsLib.getDocument(safeUrl).promise;
+      const num = doc.numPages;
+      console.log(`[Book] PDF: ${num} páginas.`);
+
+      const totalLabel = document.getElementById("total-pages");
+      if (totalLabel) totalLabel.textContent = num.toString();
+
+      newEl.innerHTML = "";
+      const isMobile = window.innerWidth < 768;
+      const scale = isMobile ? 1.0 : 1.3;
+
+      for (let i = 1; i <= num; i++) {
+        // 🔥 ABORTAR SI SE INICIÓ OTRA CARGA 🔥
+        if (myLoadId !== currentLoadId) {
+          console.log("[Book] Carga de PDF abortada por nuevo clic.");
+          return;
+        }
+
+        // Actualizar barra de progreso visual (Escala de 10 a 90% durante el renderizado)
+        const progress = 10 + Math.round((i / num) * 80);
+        if (loaderBar) loaderBar.style.width = `${progress}%`;
+        if (loaderPercent) loaderPercent.textContent = `${progress}%`;
+
+        if (progressEl)
+          progressEl.textContent = `Procesando Pág. ${i} de ${num}`;
+        console.log(`[Book] Iniciando render página ${i}...`);
+
+        const page = await doc.getPage(i);
+        const vp = page.getViewport({ scale });
+        const div = document.createElement("div");
+        div.className = "page-item";
+        const canvas = document.createElement("canvas");
+        canvas.width = vp.width;
+        canvas.height = vp.height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          // @ts-ignore
+          await page.render({
+            canvasContext: ctx,
+            viewport: vp,
+            canvas: canvas,
+          }).promise;
+          div.appendChild(canvas);
+          newEl.appendChild(div);
+        }
+        page.cleanup();
+        console.log(`[Book] Página ${i} procesada OK`);
+      }
+
+      if (progressEl) progressEl.textContent = `Armando libro dinámico...`;
+
+      await new Promise((r) => setTimeout(r, 500));
+      if (myLoadId !== currentLoadId) return;
+
+      const firstPage = await doc.getPage(1);
+      const vp = firstPage.getViewport({ scale: 1 });
+
+      const flip = new PageFlip(newEl, {
+        width: vp.width,
+        height: vp.height,
+        // @ts-ignore
+        size: "stretch",
+        minWidth: 300,
+        maxWidth: 1000,
+        minHeight: 400,
+        maxHeight: 1500,
+        showCover: true,
+        useMouseEvents: true,
+        usePortrait: isMobile,
+        mobileScrollSupport: true,
+      });
+
+      // @ts-ignore
+      flip.loadFromHTML(newEl.querySelectorAll(".page-item"));
+      currentFlip = flip;
+      console.log("[Book] PageFlip Cargado.");
+
+      // 🔥 Pausa Vital: Esperamos que PageFlip termine de posicionarse y escalar
+      // internamente antes de mostrar nada al usuario (evita saltos bruscos)
+      await new Promise((r) => setTimeout(r, 600));
+      if (myLoadId !== currentLoadId) return;
+
+      // Forzar barra al 100% al finalizar
+      if (loaderBar) loaderBar.style.width = "100%";
+      if (loaderPercent) loaderPercent.textContent = "100%";
+      if (progressEl) progressEl.textContent = "¡Listo!";
+
+      // Limpiar UI una vez cargado
+      if (loadTimeout) clearTimeout(loadTimeout);
+
+      if (loader) {
+        // Pausa elegante para ver el 100%
+        await new Promise((r) => setTimeout(r, 900));
+
+        loader.style.opacity = "0";
+        setTimeout(() => {
+          loader.style.display = "none";
+          loader.classList.add("pointer-events-none");
+          if (wrapper) wrapper.classList.add("book-visible");
+        }, 500);
+      } else {
+        if (wrapper) wrapper.classList.add("book-visible");
+      }
+
+      flip.on("flip", (e) => {
+        const cur = document.getElementById("current-page");
+        if (cur)
+          cur.textContent = (Number(e.data) + 1).toString().padStart(2, "0");
+      });
+    } catch (err) {
+      console.error("[Book] Error grave:", err);
+      // Ocultar loader tras un error para que la página no quede bloqueada
+      if (loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => {
+          loader.style.display = "none";
+          loader.classList.add("pointer-events-none");
+          if (wrapper) wrapper.classList.add("book-visible");
+        }, 300);
+      }
+    }
+  }
+
+  // Listeners de paginación globales (evita duplicados al cambiar de PDF)
+  document.getElementById("prev-page")?.addEventListener("click", () => {
+    if (currentFlip) currentFlip.flipPrev();
+  });
+  document.getElementById("next-page")?.addEventListener("click", () => {
+    if (currentFlip) currentFlip.flipNext();
+  });
+
+  // Inicializar tabs de PDF
+  const tabs = document.querySelectorAll(".pdf-tab");
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (e) => {
+      const target = e.currentTarget as HTMLButtonElement;
+      if (target.classList.contains("active")) return;
+
+      // Actualizar estado activo
+      tabs.forEach((t) => {
+        t.classList.remove(
+          "active",
+          "text-white",
+          "bg-forest-dark",
+          "shadow-md",
+        );
+        t.classList.add("text-forest-dark/60");
+      });
+      target.classList.remove("text-forest-dark/60");
+      target.classList.add(
+        "active",
+        "text-white",
+        "bg-forest-dark",
+        "shadow-md",
+      );
+
+      const newPdf = target.getAttribute("data-pdf");
+      if (newPdf) {
+        startBook(newPdf);
+      }
+    });
+  });
+
+  // Ejecución segura inicial con el primer PDF
+  const activeTab = document.querySelector(".pdf-tab.active");
+  const initialPdf = activeTab?.getAttribute("data-pdf") || (document.querySelector(".pdf-tab")?.getAttribute("data-pdf"));
+  
+  if (initialPdf) {
+    if (document.readyState === "complete") {
+      startBook(initialPdf);
+    } else {
+      window.addEventListener("load", () => startBook(initialPdf));
+    }
+  }
+</script>

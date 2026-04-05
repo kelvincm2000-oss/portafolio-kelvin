@@ -1,0 +1,144 @@
+---
+// src/components/ShotsGrid.astro
+import fs from 'node:fs';
+import path from 'node:path';
+import { Image } from 'astro:assets';
+
+// Leemos la carpeta shots durante la construcción (build-time)
+const shotsDir = path.join(process.cwd(), 'public', 'shots');
+let allFiles: string[] = [];
+
+try {
+  allFiles = fs.readdirSync(shotsDir);
+} catch (e) {
+  console.error("Error leyendo la carpeta shots:", e);
+}
+
+// Filtramos solo imágenes y las servimos en el orden natural del sistema de archivos
+const shots = allFiles
+  .filter(file => /\.(png|jpe?g|webp|gif)$/i.test(file))
+  .map(file => ({
+    url: `/shots/${file}`,
+    title: file.replace(/\.(png|jpe?g|webp|gif)$/i, '').replace(/[-_]/g, ' ')
+  }));
+---
+
+<section id="archive" class="shots-grid-container py-24 px-6 bg-white overflow-hidden">
+  <div class="max-w-[1400px] mx-auto overflow-hidden">
+    <!-- Header -->
+    <div class="mb-16 pointer-events-none overflow-hidden text-center md:text-left title-reveal">
+      <h2 class="text-6xl md:text-8xl font-black text-forest-dark uppercase tracking-tighter leading-none overflow-hidden">
+        Shots <span class="text-forest-green">Archive</span>
+      </h2>
+      <p class="mt-4 text-[10px] uppercase tracking-[0.6em] text-forest-dark/30 font-bold overflow-hidden">
+        Visual identity & Creative experiments
+      </p>
+    </div>
+
+    <!-- Masonry Grid con orden natural -->
+    <div id="shots-masonry" class="masonry-grid overflow-hidden">
+      {shots.map((shot, index) => (
+        <div 
+          class="masonry-item-reveal group relative overflow-hidden mb-6 bg-forest-dark/5 rounded-3xl"
+          data-index={index}
+        >
+          <Image 
+            src={shot.url} 
+            alt={shot.title}
+            width={800}
+            height={800}
+            class="w-full h-auto group-hover:scale-[1.02] transition-transform duration-700 ease-in-out"
+          />
+          <!-- Overlay on hover -->
+          <div class="absolute inset-0 bg-linear-to-t from-forest-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 border-none overflow-hidden pointer-events-none text-left">
+            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out overflow-hidden w-full">
+              <p class="text-white font-black uppercase text-[10px] tracking-[0.3em] overflow-hidden drop-shadow-md">{shot.title}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "../lib/gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const items = document.querySelectorAll('.masonry-item-reveal');
+  const title = document.querySelector('.title-reveal');
+
+  // Aseguramos que ScrollTrigger se refresque después de que el masonry se asiente
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+  });
+
+  if (items.length > 0) {
+    ScrollTrigger.batch(items, {
+      onEnter: (batch) => {
+        gsap.to(batch, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power2.out",
+          overwrite: true
+        });
+      },
+      start: "top 95%",
+      once: true
+    });
+  }
+
+  if (title) {
+    gsap.from(title, {
+      opacity: 0,
+      x: -20,
+      duration: 1.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#archive",
+        start: "top 85%",
+        once: true
+      }
+    });
+  }
+</script>
+
+<style>
+  .masonry-grid {
+    columns: 2;
+    column-gap: 0.75rem;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) { 
+    .masonry-grid { 
+      columns: 3; 
+      column-gap: 1.5rem;
+    } 
+  }
+  @media (min-width: 1280px) { 
+    .masonry-grid { 
+      columns: 4; 
+    } 
+  }
+
+  .masonry-item-reveal {
+    break-inside: avoid;
+    border-radius: 1.5rem;
+    display: inline-block;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: transform, opacity;
+  }
+
+  .masonry-item-reveal img {
+    border-radius: 1.5rem;
+    display: block;
+    width: 100%;
+  }
+</style>

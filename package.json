@@ -1,0 +1,29 @@
+{
+  "name": "kelvin-portafolio",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.2",
+    "gsap": "^3.14.2",
+    "page-flip": "^2.0.7",
+    "pdfjs-dist": "^5.6.205",
+    "split-type": "^0.3.4",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "@types/page-flip": "^2.0.4"
+  }
+}

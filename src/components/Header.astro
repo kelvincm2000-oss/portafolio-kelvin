@@ -1,0 +1,156 @@
+---
+// src/components/Header.astro
+import { Image } from 'astro:assets';
+import aguacateLogo from '../../public/Dibujo digital (Aguacate).png';
+
+const navItems = [
+  { name: 'Inicio', href: '#inicio' },
+  { name: 'Proyectos', href: '#proyectos' },
+  { name: 'Archivo', href: '#archive' },
+  { name: 'Servicios', href: '#servicios' },
+  { name: 'Contacto', href: '#contacto' },
+];
+---
+
+<header class="fixed top-0 left-0 w-full z-100 bg-white/80 backdrop-blur-md border-b border-forest-dark/5">
+  <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+    <!-- Logo area -->
+    <a href="#inicio" class="flex items-center gap-3 group cursor-pointer">
+      <div class="w-12 h-12 flex items-center justify-center transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110">
+        <Image src={aguacateLogo} alt="Logo Kelvin" class="w-full h-full object-contain drop-shadow-md" />
+      </div>
+      <div class="flex flex-col">
+        <span class="text-forest-dark font-black text-sm tracking-tighter leading-none">KELVIN</span>
+        <span class="text-forest-green font-bold text-[10px] tracking-[0.2em] leading-none mt-1 uppercase">PORTFOLIO</span>
+      </div>
+    </a>
+
+    <!-- Navigation (Desktop) -->
+    <nav class="hidden md:flex items-center gap-10">
+      {navItems.map((item) => (
+        <a 
+          href={item.href} 
+          class="nav-link text-forest-dark/60 hover:text-forest-dark font-bold text-xs uppercase tracking-widest transition-colors duration-300 relative group"
+        >
+          {item.name}
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-forest-green transition-all duration-300 group-hover:w-full"></span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- Mobile Trigger & Desktop CTA -->
+    <div class="flex items-center gap-6">
+      <div class="hidden lg:flex flex-col items-end text-right">
+        <span class="text-[9px] font-bold text-forest-dark/40 uppercase tracking-widest">Local Time</span>
+        <span id="header-time" class="text-[11px] font-black text-forest-dark uppercase">00:00 AM</span>
+      </div>
+      
+      <a href="#contacto" class="hidden sm:block px-6 py-3 bg-forest-dark text-white rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-forest-green transition-all duration-500 shadow-lg shadow-forest-dark/10">
+        Let's Talk
+      </a>
+
+      <!-- Mobile Button -->
+      <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none" aria-label="Toggle Menu">
+        <span class="w-6 h-0.5 bg-forest-dark transition-all duration-300 origin-center"></span>
+        <span class="w-6 h-0.5 bg-forest-dark transition-all duration-300"></span>
+        <span class="w-6 h-0.5 bg-forest-dark transition-all duration-300 origin-center"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 top-20 bg-forest-dark z-[-1] translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.85,0,0.15,1)] md:hidden">
+    <div class="flex flex-col items-center justify-center h-full gap-10 p-12 text-center">
+      {navItems.map((item) => (
+        <a 
+          href={item.href} 
+          class="mobile-nav-link text-4xl font-black text-white/40 hover:text-white uppercase tracking-tighter transition-all duration-500"
+        >
+          {item.name}
+        </a>
+      ))}
+      <a href="#contacto" class="mt-8 px-10 py-5 bg-forest-green text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-forest-dark transition-all duration-500 mobile-nav-link">
+        Contact Me
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // 1. Reloj del Header
+  function updateTime() {
+    const timeElement = document.getElementById('header-time');
+    if (!timeElement) return;
+    
+    const now = new Date();
+    const options: Intl.DateTimeFormatOptions = { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    };
+    timeElement.textContent = (now.toLocaleTimeString('en-US', options)).toUpperCase();
+  }
+
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  // 2. Mobile Menu Toggle
+  const btn = document.getElementById('mobile-menu-btn');
+  const overlay = document.getElementById('mobile-overlay');
+  const spans = btn?.querySelectorAll('span');
+  let isMenuOpen = false;
+
+  const toggleMenu = (open?: boolean) => {
+    isMenuOpen = open !== undefined ? open : !isMenuOpen;
+    
+    if (isMenuOpen) {
+      overlay?.classList.remove('translate-x-full');
+      spans![0].classList.add('rotate-45', 'translate-y-2');
+      spans![1].classList.add('opacity-0');
+      spans![2].classList.add('-rotate-45', '-translate-y-2');
+      document.body.style.overflow = 'hidden';
+    } else {
+      overlay?.classList.add('translate-x-full');
+      spans![0].classList.remove('rotate-45', 'translate-y-2');
+      spans![1].classList.remove('opacity-0');
+      spans![2].classList.remove('-rotate-45', '-translate-y-2');
+      document.body.style.overflow = '';
+    }
+  };
+
+  btn?.addEventListener('click', () => toggleMenu());
+
+  // 3. Smooth Scroll & Close Menu
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#') return;
+      
+      e.preventDefault();
+      
+      // Close mobile menu if open
+      if (isMenuOpen) toggleMenu(false);
+
+      const targetElement = document.querySelector(href);
+      
+      if (targetElement) {
+        const offset = 80;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .mobile-nav-link {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), color 0.3s ease;
+  }
+  .mobile-nav-link:hover {
+    transform: scale(1.1);
+  }
+</style>

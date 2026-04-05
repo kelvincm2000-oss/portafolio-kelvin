@@ -1,0 +1,115 @@
+---
+// ServicesSection.astro
+const services = [
+  {
+    step: "01",
+    title: "Branding & Identity",
+    description: "Creación de marcas con alma. Desde el logotipo hasta el manual de identidad completo, construyo sistemas visuales que cuentan historias.",
+    tags: ["Logotipos", "Sistemas Visuales", "Packaging"],
+    icon: "✦"
+  },
+  {
+    step: "02",
+    title: "Digital Illustration",
+    description: "Arte vectorial y editorial con un enfoque artístico. Transformo ideas abstractas en ilustraciones que impactan y comunican.",
+    tags: ["Concept Art", "Vectorial", "Editorial"],
+    icon: "✎"
+  },
+  {
+    step: "03",
+    title: "UI/UX & Web Design",
+    description: "Interfaces intuitivas y estéticamente impecables. Diseño experiencias digitales centradas en el usuario y el minimalismo premium.",
+    tags: ["Figma", "Prototipado", "Web Apps"],
+    icon: "⌘"
+  },
+  {
+    step: "04",
+    title: "Editorial & Layout",
+    description: "El arte de la composición. Maquetación de revistas, libros y carteles con una tipografía cuidada y un ritmo visual perfecto.",
+    tags: ["InDesign", "Posters", "Revistas"],
+    icon: "▤"
+  }
+];
+---
+
+<section id="servicios" class="py-32 bg-white relative overflow-hidden">
+  <!-- Fondo decorativo sutil -->
+  <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-forest-green/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+  
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="max-w-4xl mb-24">
+      <h2 class="text-6xl md:text-8xl font-delight font-black uppercase tracking-tighter text-forest-dark mb-6 leading-[0.85]">
+        Mis <span class="text-stone-300">Servicios</span>
+      </h2>
+      <p class="text-xl md:text-2xl text-stone-500 font-delight max-w-2xl leading-relaxed">
+        Soluciones creativas que fusionan el arte técnico con una visión de diseño estratégica.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
+      {services.map((service) => (
+        <div class="service-card group cursor-default">
+          <div class="flex items-start gap-6 mb-6">
+            <span class="text-sm font-delight font-bold text-forest-green/40 tracking-widest pt-2 shrink-0">
+              {service.step}
+            </span>
+            <div class="h-px flex-1 bg-stone-100 mt-4 group-hover:bg-forest-green/30 transition-colors duration-700"></div>
+            <div class="w-8 h-8 flex items-center justify-center shrink-0">
+              <span class="text-2xl text-stone-300 group-hover:text-forest-green transition-colors duration-500 leading-none">
+                {service.icon}
+              </span>
+            </div>
+          </div>
+          
+          <h3 class="text-3xl md:text-4xl font-delight font-bold text-forest-dark mb-6 group-hover:translate-x-2 transition-transform duration-500">
+            {service.title}
+          </h3>
+          
+          <p class="text-lg text-stone-500 font-delight leading-relaxed mb-8 max-w-lg">
+            {service.description}
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            {service.tags.map(tag => (
+              <span class="px-3 py-1 text-[10px] uppercase tracking-wider font-delight font-bold border border-stone-100 text-stone-400 group-hover:border-forest-green/20 group-hover:text-forest-green transition-all duration-500">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "../lib/gsap";
+
+  const svSection = document.querySelector("#servicios");
+  const svCards = svSection?.querySelectorAll(".service-card");
+  
+  const svObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        gsap.from(entry.target, {
+          y: 60,
+          opacity: 0,
+          duration: 1.2,
+          ease: "expo.out",
+          clearProps: "all"
+        });
+        svObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  if (svCards) {
+    svCards.forEach(card => svObserver.observe(card));
+  }
+</script>
+
+<style>
+  .service-card {
+    will-change: transform, opacity;
+  }
+</style>

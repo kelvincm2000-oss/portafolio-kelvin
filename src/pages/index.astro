@@ -1,0 +1,80 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProjectBook from "../components/ProjectBook.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import ShotsGrid from "../components/ShotsGrid.astro";
+import ContactSection from "../components/ContactSection.astro";
+import SoftwareToolkit from "../components/SoftwareToolkit.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+
+// Nueva era "Paper Book Portfolio" - Inspirado en "Paper" by WeTransfer
+---
+
+<Layout title="Kelvin | Portfolio Portfolio Book">
+  <main
+    class="min-h-screen bg-white selection:bg-pale-moss selection:text-forest-dark overflow-x-hidden"
+  >
+    <Header />
+    <!-- Hero Section -->
+    <Hero />
+
+    <SoftwareToolkit />
+
+    <section id="proyectos" class="pb-24 book-reveal">
+      <ProjectBook />
+    </section>
+
+    <!-- Shots Grid Archive -->
+    <ShotsGrid />
+
+    <ServicesSection />
+
+    <!-- Contact Section -->
+    <ContactSection />
+  </main>
+</Layout>
+
+<script>
+  import { gsap } from "../lib/gsap";
+
+  // Animación de entrada "Studio Style"
+  const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+
+  tl.to(".title-reveal", {
+    opacity: 1,
+    y: 0,
+    duration: 2.2,
+    startAt: { y: 60, filter: "blur(15px)" },
+    filter: "blur(0px)",
+  })
+    .to(
+      ".subtitle-reveal",
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        startAt: { y: 20 },
+      },
+      "-=1.8",
+    )
+    .to(
+      ".book-reveal",
+      {
+        opacity: 1,
+        y: 0,
+        duration: 2,
+        startAt: { y: 40 },
+      },
+      "-=1.2",
+    );
+</script>
+
+<style>
+  .title-reveal,
+  .subtitle-reveal,
+  .book-reveal,
+  .shots-reveal {
+    will-change: transform, filter, opacity;
+  }
+</style>
