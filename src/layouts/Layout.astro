@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
 	title: string;
@@ -20,6 +21,7 @@ const { title, description = "Premium Graphic Designer Portfolio - Kelvin" } = A
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<Analytics />
 	</head>
 	<body class="bg-white text-forest-dark antialiased selection:bg-pale-moss selection:text-forest-dark overflow-x-hidden">
 		<slot />
