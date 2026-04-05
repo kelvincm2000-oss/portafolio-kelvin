@@ -3,41 +3,42 @@
 import kelSvg from '../../public/kel.svg?raw';
 ---
 
-<section id="inicio" class="relative min-h-screen flex flex-col pt-32 pb-20 px-6 md:px-12 bg-white overflow-hidden uppercase font-black">
+<section id="inicio" class="relative min-h-screen flex flex-col pt-24 md:pt-32 pb-20 px-6 md:px-12 bg-white overflow-hidden uppercase font-black">
   <!-- Top reference line -->
-  <div class="absolute top-28 left-0 w-full h-px bg-forest-dark/10"></div>
+  <div class="absolute top-24 md:top-28 left-0 w-full h-px bg-forest-dark/10"></div>
   
   <div class="container mx-auto relative z-10 grow flex flex-col justify-between">
     <!-- Main Title Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end w-full mb-20 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-end w-full mb-12 md:mb-20 relative z-10">
       <div class="relative">
-        <h1 class="text-[clamp(4rem,15vw,12rem)] leading-[0.8] tracking-tighter text-forest-dark">
+        <h1 class="text-[clamp(2.5rem,15vw,12rem)] leading-[0.8] tracking-tighter text-forest-dark">
           CREANDO<br/>
-          <span class="text-forest-green italic translate-x-4 inline-block">ARTE</span>
+          <span class="text-forest-green italic translate-x-2 md:translate-x-4 inline-block">ARTE</span>
         </h1>
       </div>
       
       <div class="flex flex-col items-start lg:items-end text-left lg:text-right">
-        <div class="w-full max-w-sm mb-8">
-           <div class="flex items-center gap-2 mb-4 justify-start lg:justify-end">
+        <h2 class="text-[clamp(2.5rem,15vw,12rem)] leading-[0.8] tracking-tighter text-forest-dark order-1 lg:order-2 mb-6 lg:mb-0 lg:mt-auto">
+          VISUAL
+        </h2>
+        
+        <div class="w-full max-w-sm mb-6 md:mb-8 order-2 lg:order-1">
+           <div class="flex items-center gap-2 mb-3 md:mb-4 justify-start lg:justify-end">
             <span class="relative flex h-2 w-2">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-forest-green opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-forest-green"></span>
             </span>
-            <span class="text-[10px] tracking-[0.2em] text-forest-green">Haciendo Magia</span>
+            <span class="text-[9px] md:text-[10px] tracking-[0.2em] text-forest-green">Haciendo Magia</span>
           </div>
-          <p class="text-sm font-bold text-forest-dark/60 leading-tight">
+          <p class="text-xs md:text-sm font-bold text-forest-dark/60 leading-tight">
             Diseñador e Ilustrador transformando ideas en experiencias visuales premium para marcas que buscan destacar.
           </p>
         </div>
-        <h2 class="text-[clamp(4rem,15vw,12rem)] leading-[0.8] tracking-tighter text-forest-dark mt-auto">
-          VISUAL
-        </h2>
       </div>
     </div>
 
     <!-- Center Composition: Illustration with background shape -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[450px] lg:w-[600px] pointer-events-none z-0">
+    <div class="absolute top-[55%] md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[400px] md:w-[450px] lg:w-[600px] pointer-events-none z-0">
       <div class="absolute inset-0 bg-forest-green/5 blur-[120px] rounded-full scale-150 animate-pulse"></div>
       <div 
          class="w-full h-auto drop-shadow-[0_40px_80px_rgba(0,0,0,0.15)] kel-svg-container"
