@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Kelvin Cadrazco - CV Diseñador Gráfico</title>
+<meta name="author" content="Kelvin Cadrazco">
+<meta name="description" content="CV de Kelvin Cadrazco, Diseñador Gráfico: branding, identidad visual, redes sociales, anuncios Meta Ads, diseño web, empaques, material POP e IA aplicada al diseño.">
+<style>
+  @font-face { font-family: Delight; src: url(../public/fonts/delight-regular.otf); font-weight: 400; }
+  @font-face { font-family: Delight; src: url(../public/fonts/delight-medium.otf); font-weight: 500; }
+  @font-face { font-family: Delight; src: url(../public/fonts/delight-bold.otf); font-weight: 700; }
+  @font-face { font-family: Delight; src: url(../public/fonts/delight-extrabold.otf); font-weight: 800; }
+  @font-face { font-family: Delight; src: url(../public/fonts/delight-black.otf); font-weight: 900; }
+
+  :root {
+    --dark: #132a13; --green: #31572c; --olive: #4f772d; --moss: #90a955; --pale: #ecf39e;
+    --ink: #1d2a1d; --muted: #5b6b5b; --line: #dfe6d5;
+  }
+  @page { size: Letter; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; }
+  body { font-family: Delight, sans-serif; color: var(--ink); font-size: 9.6pt; line-height: 1.38;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  a { color: inherit; text-decoration: none; }
+  .page { width: 8.5in; height: 11in; position: relative; overflow: hidden; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+
+  /* ---------- Página 1: CV ---------- */
+  .cv { display: grid; grid-template-columns: 2.35in 1fr; grid-template-areas: "side main"; }
+  .main { grid-area: main; padding: 0.42in 0.45in 0.35in 0.38in;
+          background: radial-gradient(140% 1.7in at 100% 0, var(--pale) 99%, #fff 100%) no-repeat #fff; }
+  .side { grid-area: side; background: var(--green); color: #fff; padding: 0 0 0.3in; }
+
+  h1 { font-weight: 900; font-size: 34pt; line-height: 0.95; color: var(--green); letter-spacing: -0.01em; word-spacing: 0.08em; }
+  .role { margin-top: 6pt; font-weight: 800; font-size: 11.5pt; color: var(--dark); }
+  .role span { color: var(--olive); }
+  .contact { margin-top: 13pt; display: flex; flex-wrap: wrap; gap: 3pt 12pt; font-size: 8.8pt; color: var(--dark); }
+  .contact a { border-bottom: 1px solid var(--moss); font-weight: 700; }
+
+  h2 { display: inline-block; background: var(--green); color: #fff; font-weight: 700; font-size: 9pt;
+       letter-spacing: 0.04em; padding: 2.5pt 11pt; border-radius: 20pt; margin: 11pt 0 5pt; }
+  .summary { color: var(--ink); }
+
+  .job { margin-bottom: 7.5pt; }
+  .job-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8pt; }
+  .job h3 { font-size: 10pt; font-weight: 800; color: var(--dark); }
+  .job .org { font-weight: 700; color: var(--olive); }
+  .date { flex: none; font-size: 8pt; font-weight: 700; color: #fff; background: var(--dark);
+          padding: 1.5pt 8pt; border-radius: 20pt; }
+  ul { list-style: none; margin-top: 2.5pt; }
+  li { padding-left: 10pt; text-indent: -10pt; margin-bottom: 1.5pt; }
+  li::before { content: ""; display: inline-block; width: 4.5pt; height: 4.5pt; margin-right: 5.5pt; vertical-align: 1pt; border-radius: 50%; background: var(--moss); }
+
+  .edu p { margin-bottom: 2pt; }
+  .edu b { color: var(--dark); }
+
+  .photo { width: 100%; height: 2.05in; background: #e8ecdf; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo img.logo { width: 62%; height: auto; object-fit: contain; }
+  .side-block { padding: 0 0.26in; margin-top: 12pt; }
+  .side h2 { background: var(--pale); color: var(--dark); margin: 0 0 6pt; }
+  .side ul li { margin-bottom: 2.6pt; font-size: 9pt; }
+  .side ul li::before { background: var(--pale); }
+  .side p { font-size: 8.8pt; }
+  .tags { display: flex; flex-wrap: wrap; gap: 3.5pt; }
+  .tags span { font-size: 8pt; font-weight: 700; border: 1px solid rgba(236,243,158,.55); border-radius: 20pt; padding: 1.5pt 7pt; }
+
+  /* ---------- Marcas ---------- */
+  .brands { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5pt; }
+  .brands figure { border-radius: 6pt; height: 0.56in; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--line); }
+  .brands img { max-width: 92%; max-height: 88%; object-fit: contain; }
+  .brands-names { font-size: 8pt; color: var(--muted); margin-top: 3pt; }
+
+  /* ---------- Página 2: casos ---------- */
+  .cases { display: grid; grid-template-columns: 0.22in 1fr; }
+  .cases .strip { background: var(--green); }
+  .cases .body { padding: 0.32in 0.45in 0.25in 0.35in; }
+  .cases h1 { font-size: 22pt; }
+  .cases .intro { color: var(--muted); margin: 3pt 0 4pt; font-size: 9pt; }
+  .case { display: grid; grid-template-columns: 1.25in 1fr; gap: 12pt; padding: 5.5pt 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
+  .case-logo { border-radius: 7pt; height: 0.8in; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--line); }
+  .case-logo img { max-width: 88%; max-height: 82%; object-fit: contain; }
+  .case h3 { font-size: 10.5pt; font-weight: 800; color: var(--dark); }
+  .case h3 span { font-weight: 500; color: var(--olive); font-size: 9pt; }
+  .case p { margin-top: 2.5pt; }
+  .case .k { font-weight: 800; color: var(--green); }
+
+  /* ---------- Anexo: portafolio ---------- */
+  .annex { padding: 0.42in 0.45in; }
+  .annex-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--green); padding-bottom: 7pt; margin-bottom: 4pt; }
+  .annex-head h1 { font-size: 24pt; }
+  .annex-head .sub { font-size: 8.8pt; text-align: right; color: var(--muted); }
+  .annex-head .sub a { color: var(--green); font-weight: 800; border-bottom: 1px solid var(--moss); }
+  .annex h2 { margin-top: 11pt; }
+  .annex .lead { font-size: 8.8pt; color: var(--muted); margin: -2pt 0 6pt; }
+  .grid { display: grid; gap: 8pt; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .g5 { grid-template-columns: repeat(5, 1fr); }
+  figure { break-inside: avoid; }
+  figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 7pt; display: block; background: #f1f4ea; }
+  figure.sq img { aspect-ratio: 1 / 1; }
+  figure.fit img { object-fit: contain; padding: 14%; }
+  figcaption { font-size: 7.4pt; line-height: 1.25; margin-top: 3pt; color: var(--muted); }
+  figcaption b { color: var(--dark); display: block; font-size: 7.8pt; }
+  .note { margin-top: 10pt; font-size: 8.6pt; background: var(--pale); color: var(--dark); border-radius: 8pt; padding: 7pt 10pt; }
+  .note a { font-weight: 800; border-bottom: 1px solid var(--green); }
+</style>
+</head>
+<body>
+
+<!-- ================= PÁGINA 1: CV ================= -->
+<section class="page cv">
+  <main class="main">
+    <header class="head">
+      <h1>Kelvin Cadrazco</h1>
+      <p class="role">Diseñador Gráfico <span>· Branding, Redes Sociales, Anuncios e IA</span></p>
+      <p class="contact">
+        <a href="mailto:kelvincm2000@gmail.com">kelvincm2000@gmail.com</a>
+        <a href="tel:+584125349040">0412-5349040</a>
+        <a href="https://portafolio-kelvin-nine.vercel.app/">Portafolio: portafolio-kelvin-nine.vercel.app</a>
+        <a href="https://www.behance.net/kelvincadrazco">Behance: behance.net/kelvincadrazco</a>
+        <span>Petare, Caracas (a minutos de La California) · Disponible para trabajo presencial</span>
+        <span>25 años · Venezolano</span>
+      </p>
+    </header>
+
+    <h2>Perfil</h2>
+    <p class="summary">
+      Diseñador gráfico con experiencia comprobada en <b>branding e identidad visual</b>, <b>logotipos</b>, <b>redes sociales</b>,
+      <b>anuncios publicitarios</b> (Meta Ads), <b>diseño web</b>, <b>empaques y material POP</b>. He creado identidades y
+      campañas para marcas de perfumería (retail), veterinaria, turismo, paisajismo y construcción, en Venezuela y EE. UU.,
+      siguiendo <b>lineamientos visuales de marca</b> con buen ojo para la composición, la tipografía y la estética limpia.
+      Manejo <b>IA</b> a diario (Higgsfield, Google Flow, Nano Banana, Gemini con MCP) para generar fotos,
+      imágenes y contenido a escala. Organizado y autónomo, de la idea a la entrega final.
+    </p>
+
+    <h2>Marcas con las que he trabajado</h2>
+    <div class="brands">
+      <figure style="background:#e9e9ea"><img src="img/logo-forge.png" alt="Logotipo Forge Works Welding"></figure>
+      <figure style="background:#f9fffb"><img src="img/logo-bmv.png" alt="Logotipo BMV Perfumes"></figure>
+      <figure style="background:#f8f5ed"><img src="img/logo-manada.png" alt="Logotipo Manada"></figure>
+      <figure style="background:#000"><img src="img/logo-natu.png" alt="Logotipo Natu"></figure>
+      <figure style="background:#eef4df"><img src="img/logo-palmar.png" alt="Logotipo Paisaje el Palmar"></figure>
+    </div>
+    <p class="brands-names">Forge Works Welding · BMV Perfumes · Manada · Natu · Paisaje el Palmar (casos en la pág. 2)</p>
+
+    <h2>Experiencia</h2>
+
+    <article class="job">
+      <div class="job-top"><h3>Diseñador Gráfico Independiente</h3><span class="date">2021 – Actualidad</span></div>
+      <ul>
+        <li>Identidad visual, manuales de marca y contenido para <b>Forge Works Welding</b> (EE. UU., piezas en inglés), <b>Manada</b> (clínica veterinaria), <b>Natu</b> (senderismo) y <b>Paisaje el Palmar</b> (paisajismo).</li>
+        <li>Anuncios para <b>Meta Ads</b> según el embudo de conversión, con llamados a la acción claros y variantes para pruebas A/B.</li>
+        <li>Posts, carruseles, stories y reels para Instagram, Facebook y TikTok; mockups web, iconografía e interfaces para e-commerce.</li>
+        <li>Ilustración vectorial, personajes de marca y generación de imágenes y variantes con IA.</li>
+      </ul>
+    </article>
+
+    <article class="job">
+      <div class="job-top"><h3>Diseñador de Branding · <span class="org">Perfumería BMV</span></h3><span class="date">dic 2024 – ago 2025</span></div>
+      <ul>
+        <li>Logotipo y manual de marca de <b>BMV Perfumes</b>, tienda de perfumería en Petare (retail); catálogo de <b>BMV Sexy</b>.</li>
+        <li>Piezas promocionales para el punto de venta y redes (con QR y datos del local), sorteos y la campaña de lanzamiento de perfumes de bolsillo.</li>
+      </ul>
+    </article>
+
+    <article class="job">
+      <div class="job-top"><h3>Diseñador de Branding (Prácticas Profesionales) · <span class="org">Diplomados VIP</span></h3><span class="date">mar 2025 – jul 2025</span></div>
+      <ul><li>Creación de servicios de branding: logotipos, sistemas visuales y aplicaciones de marca.</li></ul>
+    </article>
+
+    <article class="job">
+      <div class="job-top"><h3>Diseñador Web (Mockups) · <span class="org">SEPAC</span></h3><span class="date">sep 2025</span></div>
+      <ul><li>Creación de mockup web: estructura de la página, propuesta visual e interfaz.</li></ul>
+    </article>
+
+    <h2>Formación</h2>
+    <div class="edu">
+      <p><b>Curso de Diseño Gráfico</b> · Diplomados VIP · 2024</p>
+      <p><b>Bachiller en Ciencias</b> · Instituto Mano Amiga, Filas de Mariche · 2019</p>
+    </div>
+  </main>
+
+  <aside class="side">
+    <div class="photo"><img src="foto.jpg" alt="Kelvin Cadrazco" onerror="this.onerror=null;this.src='img/aguacate.png';this.className='logo'"></div>
+
+    <div class="side-block">
+      <h2>Programas</h2>
+      <ul>
+        <li>Adobe Photoshop</li>
+        <li>Adobe Illustrator</li>
+        <li>Adobe InDesign</li>
+        <li>Adobe After Effects</li>
+        <li>Canva</li>
+        <li>Figma</li>
+        <li>Affinity</li>
+      </ul>
+    </div>
+
+    <div class="side-block">
+      <h2>IA aplicada</h2>
+      <ul>
+        <li>Higgsfield (fotos con IA)</li>
+        <li>Google Flow (imágenes con IA)</li>
+        <li>Nano Banana (imágenes con IA)</li>
+        <li>Google Gemini + MCP (automatizaciones)</li>
+      </ul>
+    </div>
+
+    <div class="side-block">
+      <h2>Competencias</h2>
+      <div class="tags">
+        <span>Empaques (packaging)</span>
+        <span>Material POP</span>
+        <span>Identidad visual</span>
+        <span>Logotipos</span>
+        <span>Manual de marca</span>
+        <span>Redes sociales</span>
+        <span>Reels y carruseles</span>
+        <span>Meta Ads</span>
+        <span>Google Ads</span>
+        <span>Variantes A/B</span>
+        <span>Diseño web y UI</span>
+        <span>Ilustración vectorial</span>
+        <span>Motion graphics</span>
+        <span>Tipografía</span>
+        <span>Lineamientos de marca</span>
+        <span>Gestión autónoma</span>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- ================= PÁGINA 2: CASOS ================= -->
+<section class="page cases">
+  <div class="strip"></div>
+  <div class="body">
+    <h1>Casos de clientes</h1>
+    <p class="intro">El reto de cada marca y el porqué de cada decisión de diseño. Los manuales completos están en
+      <a href="https://portafolio-kelvin-nine.vercel.app/"><b>portafolio-kelvin-nine.vercel.app</b></a></p>
+
+    <article class="case">
+      <div class="case-logo" style="background:#e9e9ea"><img src="img/logo-forge.png" alt="Logotipo Forge Works Welding"></div>
+      <div>
+        <h3>Forge Works Welding <span>· Soldadura y herrería · EE. UU. · 2026</span></h3>
+        <p><span class="k">Reto:</span> comunicar la fuerza del trabajo pesado con un diseño limpio y profesional, y vender a propietarios en EE. UU.</p>
+        <p><span class="k">Qué hice y por qué:</span> logotipo con versión negativa para fondos oscuros y variante compacta "FWW" para formatos reducidos; área de protección medida con el trazo de la "F". Paleta de contraste triádico: el blanco da pureza, el negro jerarquía y el rojo se usa de forma táctica para guiar la vista a la información clave, la misma lógica que apliqué en sus anuncios.</p>
+        <p><span class="k">Entregables:</span> manual de marca, anuncios para Meta Ads en inglés (CTA "Free inspection", "Book now") y carruseles.</p>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-logo" style="background:#f9fffb"><img src="img/logo-bmv.png" alt="Logotipo BMV Perfumes"></div>
+      <div>
+        <h3>BMV Perfumes <span>· Tienda de perfumería en Petare · dic 2024 – ago 2025</span></h3>
+        <p><span class="k">Reto:</span> crear una marca con valor emocional para la dueña y que destaque en el punto de venta y en redes.</p>
+        <p><span class="k">Qué hice y por qué:</span> el logo parte de la firma de la madre de la dueña; lo redibujé con líneas más limpias y ordenadas para darle fuerza sin perder su origen. Elegí la tipografía Nohemi por ser minimalista, con detalles que suavizan la composición de las publicaciones, y una paleta verde con naranja para los llamados a la acción.</p>
+        <p><span class="k">Entregables:</span> manual de marca, piezas para redes y para el local (con QR y datos de contacto), sorteos, campaña de perfumes de bolsillo y catálogo de BMV Sexy.</p>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-logo" style="background:#f8f5ed"><img src="img/logo-manada.png" alt="Logotipo Manada"></div>
+      <div>
+        <h3>Manada <span>· Clínica veterinaria y bienestar de mascotas</span></h3>
+        <p><span class="k">Reto:</span> transmitir excelencia médica y trato cálido, para que el dueño vea la clínica como un lugar seguro y sin estrés para su mascota.</p>
+        <p><span class="k">Qué hice y por qué:</span> el arco del símbolo funciona como refugio y hogar; dentro, un perro grande y uno pequeño representan la "manada" y la familia. Azul con verde menta y crema para unir confianza y calidez, con versiones de color para cualquier fondo.</p>
+        <p><span class="k">Entregables:</span> logotipo, manual de marca y posts para redes.</p>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-logo" style="background:#000"><img src="img/logo-natu.png" alt="Logotipo Natu"></div>
+      <div>
+        <h3>Natu <span>· Turismo de naturaleza y senderismo en Venezuela</span></h3>
+        <p><span class="k">Reto:</span> una identidad que conecte con la naturaleza venezolana y con el espíritu de aventura.</p>
+        <p><span class="k">Qué hice y por qué:</span> una rana trepa entre las letras del nombre como símbolo de fauna y exploración. Paleta terrosa (crema, naranja tierra, verde oliva y verde bosque) y Montserrat por su legibilidad en cualquier aplicación.</p>
+        <p><span class="k">Entregables:</span> logotipo, versiones de color, paleta, tipografía y aplicaciones.</p>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-logo" style="background:#eef4df"><img src="img/logo-palmar.png" alt="Logotipo Paisaje el Palmar"></div>
+      <div>
+        <h3>Paisaje el Palmar <span>· Paisajismo y mantenimiento de jardines</span></h3>
+        <p><span class="k">Reto:</span> que el cliente pase de ver las plantas como decoración a agendar un servicio.</p>
+        <p><span class="k">Qué hice y por qué:</span> carrusel de tres láminas con estructura gancho, beneficios y llamado a la acción ("Las plantas no son adornos, son aliadas de tu salud", "Agenda ya"), y anuncios de servicio con la paleta verde lima de la marca.</p>
+        <p><span class="k">Entregables:</span> carruseles y anuncios para redes sociales.</p>
+      </div>
+    </article>
+
+    <h2>Experiencia con IA aplicada al diseño</h2>
+    <ul>
+      <li><b>Imágenes y mockups:</b> genero fotos de producto, escenas y mockups con <b>Higgsfield</b>, <b>Google Flow</b> y <b>Nano Banana</b>, y los integro en piezas finales con Photoshop.</li>
+      <li><b>Automatización a escala:</b> uso <b>Gemini con MCP</b> para automatizar variantes de diseño, redimensionado a múltiples formatos y tareas repetitivas, manteniendo la coherencia de marca.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= PÁGINA 2: PORTAFOLIO ================= -->
+<section class="page annex">
+  <div class="annex-head">
+    <h1>Portafolio · Selección</h1>
+    <p class="sub">Kelvin Cadrazco · Diseñador Gráfico<br>Completo en <a href="https://portafolio-kelvin-nine.vercel.app/">portafolio-kelvin-nine.vercel.app</a></p>
+  </div>
+
+  <h2>Branding e identidad visual</h2>
+  <p class="lead">Logotipos y sistemas visuales completos. Los manuales de marca están en el portafolio web.</p>
+  <div class="grid g4">
+    <figure class="sq"><img src="img/manada-logo.jpg" alt="Logotipo Manada"><figcaption><b>Manada</b>Logotipo e identidad, marca de mascotas</figcaption></figure>
+    <figure class="sq"><img src="img/natu.jpg" alt="Logotipo Natu en cuatro versiones de color"><figcaption><b>Natu</b>Logotipo y versiones de color</figcaption></figure>
+    <figure class="sq fit"><img src="img/logo-forge.png" alt="Logotipo Forge Works Welding" style="background:#e9e9ea"><figcaption><b>Forge Works Welding</b>Logotipo y manual de marca</figcaption></figure>
+    <figure class="sq"><img src="img/studio.jpg" alt="Logotipo Studio Créations"><figcaption><b>Studio Créations</b>Logotipo tipográfico</figcaption></figure>
+  </div>
+
+  <h2>Anuncios publicitarios (Meta Ads)</h2>
+  <p class="lead">Piezas orientadas a conversión, con oferta y llamado a la acción claros.</p>
+  <div class="grid g5">
+    <figure><img src="img/forge-post.jpg" alt="Anuncio Forge Works mantenimiento"><figcaption><b>Forge Works · EE. UU.</b>Anuncio en inglés, CTA "Book now"</figcaption></figure>
+    <figure><img src="img/forge-security.jpg" alt="Anuncio Forge Works rejas"><figcaption><b>Forge Works · EE. UU.</b>CTA "Free inspection"</figcaption></figure>
+    <figure><img src="img/forge-terraza.jpg" alt="Anuncio Forge Works pérgolas"><figcaption><b>Forge Works · EE. UU.</b>Anuncio de pérgolas</figcaption></figure>
+    <figure><img src="img/sorteo.jpg" alt="Pieza promocional Hora del sorteo"><figcaption><b>Sorteo</b>Pieza promocional de premios</figcaption></figure>
+    <figure><img src="img/burger.jpg" alt="Anuncio de hamburguesa con 10% de descuento"><figcaption><b>Promoción</b>Anuncio con oferta 10% OFF</figcaption></figure>
+  </div>
+
+  <h2>Redes sociales y campañas</h2>
+  <p class="lead">Posts y carruseles con identidad de marca coherente en toda la campaña.</p>
+  <div class="grid g4">
+    <figure><img src="img/bmv-bolsillo.jpg" alt="Post BMV Perfumes de bolsillo"><figcaption><b>BMV Perfumes</b>Lanzamiento perfumes de bolsillo</figcaption></figure>
+    <figure><img src="img/bmv-bolso.jpg" alt="Post BMV Perfumes bolso"><figcaption><b>BMV Perfumes</b>Campaña con ilustración vectorial</figcaption></figure>
+    <figure><img src="img/manada-post.jpg" alt="Post Manada salud y bienestar"><figcaption><b>Manada</b>Post de contenido</figcaption></figure>
+    <figure><img src="img/palmar.jpg" alt="Anuncio Paisaje el Palmar"><figcaption><b>Paisaje el Palmar</b>Anuncio de servicio</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= PÁGINA 3: PORTAFOLIO ================= -->
+<section class="page annex">
+  <div class="annex-head">
+    <h1>Portafolio · Selección</h1>
+    <p class="sub">Kelvin Cadrazco · Diseñador Gráfico<br>Completo en <a href="https://portafolio-kelvin-nine.vercel.app/">portafolio-kelvin-nine.vercel.app</a></p>
+  </div>
+
+  <h2>Carrusel para Instagram</h2>
+  <p class="lead">Paisaje el Palmar: carrusel de tres láminas que lleva del problema a la acción ("Agenda ya").</p>
+  <div class="grid g3">
+    <figure><img src="img/plantas-1.jpg" alt="Carrusel Paisaje el Palmar lámina 1"><figcaption><b>Lámina 1</b>Gancho</figcaption></figure>
+    <figure><img src="img/plantas-2.jpg" alt="Carrusel Paisaje el Palmar lámina 2"><figcaption><b>Lámina 2</b>Beneficios</figcaption></figure>
+    <figure><img src="img/plantas-3.jpg" alt="Carrusel Paisaje el Palmar lámina 3"><figcaption><b>Lámina 3</b>Llamado a la acción</figcaption></figure>
+  </div>
+
+  <h2>Web, ilustración y personajes de marca</h2>
+  <p class="lead">Propuestas para e-commerce e ilustración vectorial propia.</p>
+  <div class="grid g4">
+    <figure><img src="img/ecommerce.jpg" alt="Post de plantillas de e-commerce"><figcaption><b>Plantillas e-commerce</b>Mockup web y post de venta</figcaption></figure>
+    <figure><img src="img/buffa.jpg" alt="Personaje Buffa"><figcaption><b>Buffa</b>Personaje vectorial</figcaption></figure>
+    <figure><img src="img/srbur.jpg" alt="Personaje Sr. Bur"><figcaption><b>Sr. Bur</b>Personaje vectorial</figcaption></figure>
+    <figure><img src="img/rana.jpg" alt="Personaje rana"><figcaption><b>Rana</b>Personaje vectorial</figcaption></figure>
+  </div>
+
+  <p class="note">Manuales de marca y presentaciones completas (Manada, Natu, BMV Perfumes, BMV Sexy, Forge Works Welding) en
+    <a href="https://portafolio-kelvin-nine.vercel.app/">portafolio-kelvin-nine.vercel.app</a></p>
+</section>
+
+</body>
+</html>

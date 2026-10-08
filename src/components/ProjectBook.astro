@@ -16,9 +16,21 @@ try {
   console.error("Error leyendo carpeta proyects:", e);
 }
 
+// Orden y nombre visible por palabra clave del archivo; los PDFs no listados van al final con su nombre de archivo
+const order = [
+  { key: 'manada', label: 'Manada' },
+  { key: 'forge', label: 'Forge Works' },
+  { key: 'bmv sexy', label: 'BMV Sexy' },
+  { key: 'bmv perfumes', label: 'BMV Perfumes' },
+  { key: 'natu', label: 'Natu' },
+];
+const match = (file: string) => order.findIndex(({ key }) => file.toLowerCase().includes(key));
+const rank = (file: string) => (match(file) === -1 ? order.length : match(file));
+pdfFiles.sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+
 const pdfList = pdfFiles.map(file => ({
   url: `/proyects/${file}`,
-  name: file.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ')
+  name: order[match(file)]?.label ?? file.replace(/\.pdf$/i, '').replace(/[-_]/g, ' ').trim()
 }));
 ---
 
@@ -36,17 +48,17 @@ const pdfList = pdfFiles.map(file => ({
     class="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 mb-8 md:mb-16 z-20"
   >
     <h2
-      class="text-4xl md:text-5xl font-black text-forest-dark uppercase tracking-tighter title-reveal"
+      class="text-4xl md:text-5xl font-black text-forest-dark uppercase tracking-[-0.01em] title-reveal"
     >
       {t('projects.title')}
     </h2>
 
-    <div
-      class="flex items-center gap-1 bg-forest-dark/5 p-1.5 rounded-full overflow-x-auto max-w-full"
-    >
+    <div class="flex flex-wrap justify-center md:justify-end gap-2 max-w-full">
       {pdfList.map((pdf, index) => (
         <button
-          class={`pdf-tab shrink-0 px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 ${index === 0 ? 'active text-white bg-forest-dark shadow-md' : 'text-forest-dark/60 hover:text-forest-dark hover:bg-forest-dark/10'}`}
+          type="button"
+          class={`pdf-tab px-4 md:px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] whitespace-nowrap transition-all duration-300 ${index === 0 ? 'active text-white bg-olive shadow-md shadow-olive/30' : 'text-forest-dark/60 bg-forest-dark/5 hover:text-forest-dark hover:bg-forest-dark/10'}`}
+          aria-pressed={index === 0 ? 'true' : 'false'}
           data-pdf={pdf.url}>
           {pdf.name}
         </button>
@@ -430,11 +442,13 @@ const pdfList = pdfFiles.map(file => ({
       if (target.classList.contains("active")) return;
 
       tabs.forEach((t) => {
-        t.classList.remove("active", "text-white", "bg-forest-dark", "shadow-md");
-        t.classList.add("text-forest-dark/60");
+        t.classList.remove("active", "text-white", "bg-olive", "shadow-md", "shadow-olive/30");
+        t.classList.add("text-forest-dark/60", "bg-forest-dark/5");
+        t.setAttribute("aria-pressed", "false");
       });
-      target.classList.remove("text-forest-dark/60");
-      target.classList.add("active", "text-white", "bg-forest-dark", "shadow-md");
+      target.classList.remove("text-forest-dark/60", "bg-forest-dark/5");
+      target.classList.add("active", "text-white", "bg-olive", "shadow-md", "shadow-olive/30");
+      target.setAttribute("aria-pressed", "true");
 
       const newPdf = target.getAttribute("data-pdf");
       if (newPdf) {
